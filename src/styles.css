@@ -756,6 +756,73 @@ input, textarea, select {
 .link { color: var(--ember); text-decoration: none; border-bottom: 1px dashed transparent; }
 .link:hover { border-bottom-color: var(--ember); }
 
+/* -------- presets (Create form) -------- */
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  padding: 12px 14px;
+  border: var(--hairline) solid var(--hairline-dark);
+  background: var(--ink);
+  border-radius: var(--radius);
+}
+.presets__label {
+  align-self: center;
+  padding-right: 6px;
+  margin-right: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  border-right: var(--hairline) solid var(--hairline-dark);
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+.presets__pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 14px;
+  border: var(--hairline) solid var(--hairline-dark);
+  background: transparent;
+  color: var(--text-ink);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 120ms linear, color 120ms linear, background 120ms linear;
+  text-align: left;
+  min-width: 0;
+}
+.presets__pill:hover:not(:disabled) {
+  border-color: var(--ember);
+  background: rgba(227, 123, 42, 0.06);
+}
+.presets__pill:disabled { opacity: 0.45; cursor: not-allowed; }
+.presets__pill-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+}
+.presets__pill-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  line-height: 1;
+}
+.presets__pill:hover:not(:disabled) .presets__pill-hint { color: var(--ember); }
+
+@media (max-width: 700px) {
+  .presets { padding: 10px; }
+  .presets__label { border-right: 0; padding-right: 0; margin-right: 0; }
+  .presets__pill { flex: 1 1 100%; }
+}
+
 /* -------- responsiveness helpers -------- */
 @media (max-width: 700px) {
   .hero__meta { grid-template-columns: 1fr; }

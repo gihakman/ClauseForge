@@ -8,6 +8,61 @@ import {
 import { TxStatus } from "./TxStatus.jsx";
 import { shortAddr } from "../lib/format.js";
 
+// Curated example drafts. Reviewers click one to populate the whole Create
+// form in a single move; the wallet still signs every transaction.
+// Two are deliberately clear, one is deliberately blocked — together they
+// exercise both branches of the compiler.
+const PRESETS = [
+  {
+    id: "audit",
+    label: "Solidity audit",
+    party_b: "0x2Bd806c97F0e00aF1a1FC3328fA763A9269723C8",
+    title: "Solidity audit of MerkleProof helper",
+    draft:
+      "Party A engages Party B to perform a security audit of the file " +
+      "contracts/MerkleProof.sol at commit 3f2a1c9. Deliverable: a written " +
+      "audit report in Markdown covering (a) storage safety, (b) integer " +
+      "overflow paths, (c) reentrancy surface. Deadline: report delivered " +
+      "no later than 2026-09-01 23:59 UTC. Payment: 1,500 USDC on Base, " +
+      "released within 3 business days of Party A's acceptance. " +
+      "Acceptance criteria: Party A must review and either accept the " +
+      "report or file specific written objections within 5 business days " +
+      "of receipt; silence past that window is deemed acceptance. " +
+      "Revision policy: one round of revisions within 3 business days if " +
+      "objections are filed.",
+    urls: "",
+    hint: "clear · low risk",
+  },
+  {
+    id: "vague",
+    label: "Vague landing page",
+    party_b: "0x81b637d8fcd2c6da6359e6963113a1170de795e4",
+    title: "Make me a landing page",
+    draft:
+      "Party B will make a landing page for Party A. Should look modern " +
+      "and clean. Delivery soon. Payment when done. Feedback rounds if " +
+      "needed. Party A may request changes.",
+    urls: "",
+    hint: "should be blocked · high risk",
+  },
+  {
+    id: "agent",
+    label: "Agent PR review",
+    party_b: "0xE72d97bC44c58f79F5B0Ee7Ba0d24a12ed08b7fC",
+    title: "PR review by agent",
+    draft:
+      "Agent A commits Agent B to review pull request #142 on the " +
+      "example.com/repo project. Deliverable: written review with " +
+      "actionable comments on correctness, tests, and style. Deadline: " +
+      "within 24 hours of assignment. Payment: 10 USDC on acceptance. " +
+      "Acceptance criteria: review is considered accepted when Agent A " +
+      "either merges the PR or closes the review thread. Revision " +
+      "policy: none.",
+    urls: "",
+    hint: "clear · agent-to-agent",
+  },
+];
+
 export function Console({
   wallet,
   wrongChain,
@@ -249,6 +304,15 @@ function CreateForm({ wallet, reload }) {
 
   return (
     <form className="form" onSubmit={submit}>
+      <Presets
+        disabled={busy}
+        onLoad={(p) => {
+          setPartyB(p.party_b);
+          setTitle(p.title);
+          setDraft(p.draft);
+          setUrls(p.urls);
+        }}
+      />
       <div className="field">
         <label>Party B address</label>
         <input
@@ -497,5 +561,29 @@ function AcceptForm({ wallet, agreements, reload }) {
       </div>
       <TxStatus tx={tx} />
     </form>
+  );
+}
+
+
+// -------------------- PRESETS --------------------
+
+function Presets({ onLoad, disabled }) {
+  return (
+    <div className="presets">
+      <span className="presets__label">Presets</span>
+      {PRESETS.map((p) => (
+        <button
+          type="button"
+          key={p.id}
+          className="presets__pill"
+          onClick={() => onLoad(p)}
+          disabled={disabled}
+          title={p.hint}
+        >
+          <span className="presets__pill-title">{p.label}</span>
+          <span className="presets__pill-hint">{p.hint}</span>
+        </button>
+      ))}
+    </div>
   );
 }
