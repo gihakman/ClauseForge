@@ -52,12 +52,12 @@ export function AgreementCard({ ag, onOpen }) {
         <div>
           Party A accepted
           <br />
-          <strong>{ag.accepted_a ? "yes" : "—"}</strong>
+          <strong>{ag.accepted_a ? "yes" : "-"}</strong>
         </div>
         <div>
           Party B accepted
           <br />
-          <strong>{ag.accepted_b ? "yes" : "—"}</strong>
+          <strong>{ag.accepted_b ? "yes" : "-"}</strong>
         </div>
       </div>
 

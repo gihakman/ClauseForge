@@ -46,7 +46,7 @@ export function AgreementDetail({ ag, onClose }) {
         >
           <span className="card__verdict-dot" />
           <span>
-            {verdictLabel(v)} — risk {riskLabel(risk)} ({Number(ag.risk_score)})
+            {verdictLabel(v)} · risk {riskLabel(risk)} ({Number(ag.risk_score)})
           </span>
         </div>
 
@@ -136,9 +136,9 @@ export function AgreementDetail({ ag, onClose }) {
         <div className="detail__section">
           <h4>Timestamps</h4>
           <div className="mono mono--sm dim">
-            <div>created: {ag.created_at || "—"}</div>
-            <div>compiled: {ag.compiled_at || "—"}</div>
-            <div>activated: {ag.activated_at || "—"}</div>
+            <div>created: {ag.created_at || "-"}</div>
+            <div>compiled: {ag.compiled_at || "-"}</div>
+            <div>activated: {ag.activated_at || "-"}</div>
           </div>
         </div>
       </div>

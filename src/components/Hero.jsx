@@ -20,7 +20,7 @@ export function Hero({ count, config }) {
             <strong>blocking-ambiguity report</strong>. GenLayer validators
             reach consensus on whether the draft is even interpretable enough
             to commit against. Both parties then accept the same hash on
-            chain — or they don&apos;t.
+            chain, or they don&apos;t.
           </p>
           <div className="hero__ctas">
             <a className="btn btn--primary" href="#console">

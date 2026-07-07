@@ -1,5 +1,7 @@
 import { Logo } from "./Logo.jsx";
+import { GithubIcon } from "./GithubIcon.jsx";
 import { WalletButton } from "./WalletButton.jsx";
+import { GITHUB_URL } from "../lib/genlayer.js";
 
 export function Header({ wallet, onConnect, onDisconnect, wrongChain }) {
   return (
@@ -24,6 +26,16 @@ export function Header({ wallet, onConnect, onDisconnect, wrongChain }) {
             Docs
           </a>
         </nav>
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="hdr__icon"
+          aria-label="ClauseForge on GitHub"
+          title="Open the ClauseForge repository on GitHub"
+        >
+          <GithubIcon size={16} />
+        </a>
         <div className="hdr__wallet">
           <WalletButton
             wallet={wallet}

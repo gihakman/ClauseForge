@@ -18,6 +18,7 @@ export const CHAIN = testnetBradbury;
 export const CHAIN_ID_HEX = "0x" + testnetBradbury.id.toString(16); // 0x107D
 
 export const EXPLORER = "https://explorer-bradbury.genlayer.com";
+export const GITHUB_URL = "https://github.com/gihakman/ClauseForge";
 
 export function makeReadClient() {
   return createClient({ chain: testnetBradbury });

@@ -168,7 +168,7 @@ function WriteGate({ wallet, wrongChain, onConnect, children }) {
       <div className="prose">
         <h3>Connect a wallet</h3>
         <p>
-          Reads work without a wallet — see any agreement in the Read tab. To
+          Reads work without a wallet. See any agreement in the Read tab. To
           create, compile or accept an agreement, connect your wallet on
           Bradbury.
         </p>
@@ -209,10 +209,10 @@ function ReadTab({ agreements }) {
           value={id}
           onChange={(e) => setId(e.target.value)}
         >
-          {agreements.length === 0 && <option>-- no agreements yet --</option>}
+          {agreements.length === 0 && <option>(no agreements yet)</option>}
           {agreements.map((a) => (
             <option key={a.id} value={a.id}>
-              #{String(a.id).padStart(3, "0")} — {a.title || "Untitled"} ({a.status})
+              #{String(a.id).padStart(3, "0")} · {a.title || "Untitled"} ({a.status})
             </option>
           ))}
         </select>
@@ -428,11 +428,11 @@ function CompileForm({ wallet, agreements, reload }) {
           required
         >
           {draftAgreements.length === 0 && (
-            <option value="">— no draft or compiled agreements available —</option>
+            <option value="">(no draft or compiled agreements available)</option>
           )}
           {draftAgreements.map((a) => (
             <option key={a.id} value={a.id}>
-              #{String(a.id).padStart(3, "0")} — {a.title} ({a.status})
+              #{String(a.id).padStart(3, "0")} · {a.title} ({a.status})
             </option>
           ))}
         </select>
@@ -517,11 +517,11 @@ function AcceptForm({ wallet, agreements, reload }) {
           required
         >
           {compiled.length === 0 && (
-            <option value="">— no compiled agreements yet —</option>
+            <option value="">(no compiled agreements yet)</option>
           )}
           {compiled.map((a) => (
             <option key={a.id} value={a.id}>
-              #{String(a.id).padStart(3, "0")} — {a.title}
+              #{String(a.id).padStart(3, "0")} · {a.title}
             </option>
           ))}
         </select>
@@ -541,10 +541,10 @@ function AcceptForm({ wallet, agreements, reload }) {
                 ? `party_a (${shortAddr(wallet)})`
                 : isPartyB
                 ? `party_b (${shortAddr(wallet)})`
-                : `not a party to this agreement — the contract will reject this call`}
+                : `not a party to this agreement. The contract will reject this call.`}
             </div>
             <div className="help">
-              Accepted so far — A: {String(chosen.accepted_a)} · B:{" "}
+              Accepted so far. A: {String(chosen.accepted_a)} · B:{" "}
               {String(chosen.accepted_b)}. Activation requires both parties to
               accept the same hash AND clear_to_commit=true.
             </div>

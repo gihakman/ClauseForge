@@ -96,7 +96,7 @@ export function LiveCompilations({ agreements, loading, loadError, reload }) {
               </div>
               <div className="mono mono--sm dim">
                 The public Bradbury RPC rate-limits{" "}
-                <code>gen_call</code> — retrying automatically.
+                <code>gen_call</code>. Retrying automatically.
               </div>
             </div>
           </div>

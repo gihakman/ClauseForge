@@ -152,6 +152,28 @@ input, textarea, select {
 .hdr__wallet { margin-left: auto; }
 @media (min-width: 900px) { .hdr__wallet { margin-left: 0; } }
 
+/* github icon in the header. On mobile the nav is hidden, so this is
+   also the first item to claim `margin-left: auto` and slide right. */
+.hdr__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: var(--hairline) solid var(--hairline-dark);
+  border-radius: var(--radius);
+  color: var(--text-mute);
+  text-decoration: none;
+  transition: color 120ms linear, border-color 120ms linear, background 120ms linear;
+  margin-left: auto;
+}
+.hdr__icon:hover {
+  color: var(--ember);
+  border-color: var(--ember);
+  background: rgba(227, 123, 42, 0.06);
+}
+@media (min-width: 900px) { .hdr__icon { margin-left: 0; } }
+
 /* -------- hero -------- */
 .hero {
   padding: clamp(72px, 12vh, 160px) 0 clamp(56px, 10vh, 120px);
@@ -747,6 +769,30 @@ input, textarea, select {
 .ftr__brand span { font-family: var(--font-serif); font-size: 14px; font-weight: 500; }
 .ftr a { color: var(--ember); text-decoration: none; }
 .ftr a:hover { border-bottom: 1px dashed var(--ember); }
+
+/* github link in the footer -- icon + short label */
+.ftr__icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-mute);
+  text-decoration: none;
+  padding: 6px 10px;
+  border: var(--hairline) solid var(--hairline-dark);
+  border-radius: var(--radius);
+  transition: color 120ms linear, border-color 120ms linear;
+}
+.ftr__icon:hover {
+  color: var(--ember);
+  border-color: var(--ember);
+  border-bottom: var(--hairline) solid var(--ember);
+}
+.ftr__icon span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
 
 /* -------- utility -------- */
 .mono { font-family: var(--font-mono); font-size: 12px; }

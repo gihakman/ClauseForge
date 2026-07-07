@@ -1,5 +1,6 @@
-import { CONTRACT_ADDRESS, EXPLORER } from "../lib/genlayer.js";
+import { CONTRACT_ADDRESS, EXPLORER, GITHUB_URL } from "../lib/genlayer.js";
 import { Logo } from "./Logo.jsx";
+import { GithubIcon } from "./GithubIcon.jsx";
 
 const DEPLOY_TX = "0x160ff91f197885444cc3b79224e50dd70cba6f6453c95fe7e41fd05a88e2c54c";
 
@@ -41,6 +42,17 @@ export function Footer() {
             GenLayer
           </a>
         </div>
+        <a
+          className="ftr__icon"
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="ClauseForge on GitHub"
+          title="Open the ClauseForge repository on GitHub"
+        >
+          <GithubIcon size={16} />
+          <span>Source</span>
+        </a>
       </div>
     </footer>
   );

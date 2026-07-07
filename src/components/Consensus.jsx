@@ -9,7 +9,7 @@ export function Consensus() {
         <p className="section__lede">
           The trap with putting an LLM behind a contract is that its raw text
           output differs on every run. ClauseForge sidesteps this by returning
-          a small, structured surface — not free-form prose — and comparing
+          a small, structured surface, not free-form prose, and comparing
           only what matters.
         </p>
 
@@ -18,19 +18,19 @@ export function Consensus() {
             <h3>What validators actually compare</h3>
             <ul>
               <li>
-                <strong>clear_to_commit</strong> — exact bool match.
+                <strong>clear_to_commit</strong>: exact bool match.
               </li>
               <li>
-                <strong>Five clause flags</strong> — deliverables, deadlines,
+                <strong>Five clause flags</strong>: deliverables, deadlines,
                 payment, acceptance criteria, revision policy. Exact match.
               </li>
               <li>
-                <strong>risk_score</strong> — validators must agree on the
+                <strong>risk_score</strong>: validators must agree on the
                 bucket (low 0–33, medium 34–66, high 67–100). Point values
                 may differ.
               </li>
               <li>
-                <strong>ambiguity_count</strong> — within a tolerance of ±2.
+                <strong>ambiguity_count</strong>: within a tolerance of ±2.
               </li>
             </ul>
             <p>

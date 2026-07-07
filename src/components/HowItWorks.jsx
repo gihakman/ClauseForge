@@ -30,7 +30,7 @@ soon. Payment when done."`}</div>
               Anyone calls <code className="mono">compile_agreement</code>. A
               leader validator runs an LLM against the draft; other
               validators re-run the extraction and vote against a{" "}
-              <b>structured decision surface</b> — not against the raw text.
+              <b>structured decision surface</b>, not against the raw text.
               Status: <b>COMPILED</b>.
             </p>
             <div className="demo">{`leader_fn → JSON schema
