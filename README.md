@@ -167,7 +167,7 @@ node scripts/seed.mjs     # optional: seeds 4 real end-to-end examples
 Set `VITE_CONTRACT_ADDRESS` at build time to point the frontend at a different
 contract; otherwise it uses the one baked into `src/lib/genlayer.js`.
 
-## Design notes
+## Design notes  
 
 - **The consensus surface is not the LLM output.** The contract enforces a
   small structured schema and validates on that. Everything else is stored but
