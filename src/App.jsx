@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CHAIN_ID_HEX,
   connectWallet,
   currentWalletAddress,
   makeReadClient,
   onWalletEvents,
-  readConfig,
-  readCount,
-  readList,
+  readAll,
 } from "./lib/genlayer.js";
 
 import { Header } from "./components/Header.jsx";
@@ -25,36 +23,67 @@ export default function App() {
   const [count, setCount] = useState(null);
   const [agreements, setAgreements] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const inflight = useRef(false);
 
   const [wallet, setWallet] = useState(null);
   const [chainId, setChainId] = useState(null);
 
   const wrongChain =
-    wallet != null && chainId != null && chainId.toLowerCase() !== CHAIN_ID_HEX.toLowerCase();
+    wallet != null &&
+    chainId != null &&
+    chainId.toLowerCase() !== CHAIN_ID_HEX.toLowerCase();
 
   const reload = useCallback(async () => {
+    if (inflight.current) return; // never fire concurrent RPC bursts
+    inflight.current = true;
     setLoading(true);
+    setLoadError(null);
     try {
-      const [c, n, list] = await Promise.all([
-        readConfig(readClient).catch(() => null),
-        readCount(readClient).catch(() => 0),
-        readList(readClient, 0, 50).catch(() => []),
-      ]);
+      const { config: c, count: n, list } = await readAll(readClient);
       setConfig(c);
       setCount(n);
       setAgreements(Array.isArray(list) ? list : []);
+    } catch (err) {
+      const msg =
+        err?.shortMessage || err?.message || err?.details || String(err);
+      // Keep any previously-loaded data on screen, but surface the error.
+      setLoadError(msg);
+      // eslint-disable-next-line no-console
+      console.warn("read failed:", msg);
     } finally {
       setLoading(false);
+      inflight.current = false;
     }
   }, [readClient]);
 
+  // Initial load + gentle background polling. Pause when the tab is hidden
+  // to avoid burning through the gen_call rate limit while nobody is looking.
   useEffect(() => {
     reload();
-    const t = setInterval(reload, 60_000); // gentle background refresh
-    return () => clearInterval(t);
+    let timer = null;
+    const start = () => {
+      stop();
+      timer = setInterval(() => {
+        if (document.visibilityState === "visible") reload();
+      }, 90_000);
+    };
+    const stop = () => {
+      if (timer) clearInterval(timer);
+      timer = null;
+    };
+    start();
+    const onVis = () => {
+      if (document.visibilityState === "visible") reload();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, [reload]);
 
-  // Wallet: pick up an already-connected account (no prompt).
+  // Wallet: pick up an already-connected account without prompting.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -88,7 +117,6 @@ export default function App() {
   };
 
   const handleDisconnect = () => {
-    // MetaMask has no true "disconnect" from a dApp side; we just clear local state.
     setWallet(null);
     setChainId(null);
   };
@@ -106,6 +134,7 @@ export default function App() {
       <LiveCompilations
         agreements={agreements}
         loading={loading}
+        loadError={loadError}
         reload={reload}
       />
       <Console

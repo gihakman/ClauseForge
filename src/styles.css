@@ -761,3 +761,83 @@ input, textarea, select {
   .hero__meta { grid-template-columns: 1fr; }
   .console__tabs .tab { padding: 12px 8px; font-size: 11px; letter-spacing: 0.08em; }
 }
+
+/* -------- skeleton / loading -------- */
+
+/* A subtle amber sweep across a paper block. Slow, linear — matches
+   the rest of the motion system (no bounces, no glow). */
+@keyframes shimmer {
+  0%   { background-position: -420px 0; }
+  100% { background-position:  420px 0; }
+}
+
+.skel {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--paper-2) 0%,
+    var(--paper-3) 45%,
+    rgba(227, 123, 42, 0.18) 50%,
+    var(--paper-3) 55%,
+    var(--paper-2) 100%
+  );
+  background-size: 840px 100%;
+  animation: shimmer 1.6s linear infinite;
+  border-radius: var(--radius);
+}
+.card--skel { cursor: default; pointer-events: none; }
+.card--skel:hover { border-color: var(--hairline-light); }
+
+.skel--tag       { width: 70px;  height: 14px; }
+.skel--tag-r     { width: 70px; }
+.skel--title     { width: 88%;   height: 22px; margin-bottom: 6px; }
+.skel--title-2   { width: 60%;   height: 22px; margin-bottom: 4px; }
+.skel--verdict   { width: 100%;  height: 36px; }
+.skel--flag      { height: 22px; }
+.skel--line      { width: 80%;   height: 14px; margin-top: 6px; }
+.skel--line-s    { width: 40%;   height: 10px; opacity: 0.7; }
+.skel--line-mono { width: 65%;   height: 12px; margin-top: 4px; }
+
+.filter__loading {
+  display: inline-block;
+  animation: shimmer 1.6s linear infinite;
+  background: linear-gradient(
+    90deg,
+    var(--paper-3) 0%,
+    var(--ember) 50%,
+    var(--paper-3) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-mono);
+}
+
+/* -------- inline banner (used for load errors, rate-limit notices) -------- */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border: var(--hairline) solid var(--hairline-light);
+  background: var(--paper-2);
+  margin-bottom: 24px;
+  border-radius: var(--radius);
+}
+.banner--warn { border-color: var(--warn); background: rgba(196, 138, 46, 0.10); }
+.banner--err  { border-color: var(--danger); background: rgba(179, 69, 45, 0.10); }
+.banner strong { display: block; font-family: var(--font-sans); font-weight: 500; font-size: 14px; margin-bottom: 4px; color: var(--text-paper); }
+.banner__spin {
+  width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px;
+  border: 2px solid var(--hairline-light);
+  border-top-color: var(--warn);
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+}
+.banner code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 1px 4px;
+  background: var(--paper-3);
+  border-radius: var(--radius);
+}

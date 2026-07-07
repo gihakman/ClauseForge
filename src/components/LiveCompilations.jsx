@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AgreementCard } from "./AgreementCard.jsx";
 import { AgreementDetail } from "./AgreementDetail.jsx";
+import { SkeletonCard } from "./SkeletonCard.jsx";
 import { verdict } from "../lib/format.js";
 
-export function LiveCompilations({ agreements, loading, reload }) {
+export function LiveCompilations({ agreements, loading, loadError, reload }) {
   const [openId, setOpenId] = useState(null);
   const [filter, setFilter] = useState("all");
 
@@ -16,7 +17,15 @@ export function LiveCompilations({ agreements, loading, reload }) {
     return true;
   });
 
-  const openAg = openId != null ? agreements.find((a) => Number(a.id) === Number(openId)) : null;
+  const showSkeleton = loading && agreements.length === 0;
+  const showEmpty = !loading && agreements.length === 0 && !loadError;
+  const showFilteredEmpty =
+    !showSkeleton && !showEmpty && filtered.length === 0 && !loadError;
+
+  const openAg =
+    openId != null
+      ? agreements.find((a) => Number(a.id) === Number(openId))
+      : null;
 
   return (
     <section id="live" className="section section--paper">
@@ -31,7 +40,13 @@ export function LiveCompilations({ agreements, loading, reload }) {
         </p>
 
         <div className="filter">
-          <FilterChip value="all" filter={filter} setFilter={setFilter} count={agreements.length}>
+          <FilterChip
+            value="all"
+            filter={filter}
+            setFilter={setFilter}
+            count={agreements.length}
+            loading={showSkeleton}
+          >
             All
           </FilterChip>
           <FilterChip
@@ -39,6 +54,7 @@ export function LiveCompilations({ agreements, loading, reload }) {
             filter={filter}
             setFilter={setFilter}
             count={agreements.filter((a) => verdict(a) === "clear").length}
+            loading={showSkeleton}
           >
             Clear
           </FilterChip>
@@ -47,6 +63,7 @@ export function LiveCompilations({ agreements, loading, reload }) {
             filter={filter}
             setFilter={setFilter}
             count={agreements.filter((a) => verdict(a) === "blocked").length}
+            loading={showSkeleton}
           >
             Blocked
           </FilterChip>
@@ -55,31 +72,59 @@ export function LiveCompilations({ agreements, loading, reload }) {
             filter={filter}
             setFilter={setFilter}
             count={agreements.filter((a) => verdict(a) === "active").length}
+            loading={showSkeleton}
           >
             Active
           </FilterChip>
           <button
             className="btn btn--paper btn--sm"
             onClick={reload}
+            disabled={loading}
             style={{ marginLeft: "auto" }}
           >
-            Refresh
+            {loading ? "Loading…" : "Refresh"}
           </button>
         </div>
 
-        {loading && filtered.length === 0 && (
-          <p className="mono dim">Loading compilations from the contract…</p>
+        {loadError && (
+          <div className="banner banner--warn">
+            <span className="banner__spin" />
+            <div>
+              <strong>Could not reach the contract right now.</strong>
+              <div className="mono mono--sm dim">
+                {String(loadError).slice(0, 240)}
+              </div>
+              <div className="mono mono--sm dim">
+                The public Bradbury RPC rate-limits{" "}
+                <code>gen_call</code> — retrying automatically.
+              </div>
+            </div>
+          </div>
         )}
 
-        {!loading && filtered.length === 0 && (
+        {showSkeleton && (
+          <div className="grid" aria-label="Loading compilations">
+            {[0, 1, 2, 3].map((i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        )}
+
+        {showEmpty && (
+          <p className="mono dim">No agreements have been compiled yet.</p>
+        )}
+
+        {showFilteredEmpty && (
           <p className="mono dim">No agreements match this filter.</p>
         )}
 
-        <div className="grid">
-          {filtered.map((ag) => (
-            <AgreementCard key={ag.id} ag={ag} onOpen={setOpenId} />
-          ))}
-        </div>
+        {!showSkeleton && filtered.length > 0 && (
+          <div className="grid">
+            {filtered.map((ag) => (
+              <AgreementCard key={ag.id} ag={ag} onOpen={setOpenId} />
+            ))}
+          </div>
+        )}
       </div>
 
       {openAg && (
@@ -89,14 +134,18 @@ export function LiveCompilations({ agreements, loading, reload }) {
   );
 }
 
-function FilterChip({ children, value, filter, setFilter, count }) {
+function FilterChip({ children, value, filter, setFilter, count, loading }) {
   return (
     <button
       className="filter__chip"
       aria-pressed={filter === value}
       onClick={() => setFilter(value)}
+      disabled={loading}
     >
-      {children} <span className="dim">({count})</span>
+      {children}{" "}
+      <span className="dim">
+        ({loading ? <span className="filter__loading">…</span> : count})
+      </span>
     </button>
   );
 }

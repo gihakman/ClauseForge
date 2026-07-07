@@ -105,38 +105,88 @@ export async function currentWalletAddress() {
   return accs && accs[0] ? accs[0] : null;
 }
 
+// -------------------- retry / backoff --------------------
+
+function isRateLimit(err) {
+  const m = String(err?.shortMessage || err?.message || err?.details || err || "");
+  return /rate limit|rate_limit|Too Many|429|-32029|-32005/i.test(m);
+}
+function isTransient(err) {
+  const m = String(err?.shortMessage || err?.message || err?.details || err || "");
+  return /Network|fetch|timeout|ECONNRESET|EAI_AGAIN|502|503|504/i.test(m);
+}
+
+async function withBackoff(fn, { retries = 6, base = 800, cap = 8000 } = {}) {
+  let last;
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      last = e;
+      if (!(isRateLimit(e) || isTransient(e))) throw e;
+      const delay = Math.min(base * Math.pow(1.9, i), cap) + Math.random() * 250;
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+  throw last;
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 // -------------------- contract-flavoured helpers --------------------
 
 export async function readConfig(client) {
-  return client.readContract({
-    address: CONTRACT_ADDRESS,
-    functionName: "config",
-    args: [],
-  });
+  return withBackoff(() =>
+    client.readContract({
+      address: CONTRACT_ADDRESS,
+      functionName: "config",
+      args: [],
+    }),
+  );
 }
 
 export async function readCount(client) {
-  const n = await client.readContract({
-    address: CONTRACT_ADDRESS,
-    functionName: "count",
-    args: [],
-  });
+  const n = await withBackoff(() =>
+    client.readContract({
+      address: CONTRACT_ADDRESS,
+      functionName: "count",
+      args: [],
+    }),
+  );
   return Number(n);
 }
 
 export async function readList(client, offset = 0, limit = 30) {
-  const raw = await client.readContract({
-    address: CONTRACT_ADDRESS,
-    functionName: "list_recent",
-    args: [offset, limit],
-  });
+  const raw = await withBackoff(() =>
+    client.readContract({
+      address: CONTRACT_ADDRESS,
+      functionName: "list_recent",
+      args: [offset, limit],
+    }),
+  );
   return Array.isArray(raw) ? raw : [];
 }
 
 export async function readAgreement(client, id) {
-  return client.readContract({
-    address: CONTRACT_ADDRESS,
-    functionName: "get_agreement",
-    args: [Number(id)],
-  });
+  return withBackoff(() =>
+    client.readContract({
+      address: CONTRACT_ADDRESS,
+      functionName: "get_agreement",
+      args: [Number(id)],
+    }),
+  );
+}
+
+// Fetch config, count, and list sequentially so we stay under the
+// gen_call rate limit (~2/s per IP on Bradbury). Small gap between
+// calls plus per-call retry-with-backoff on rate-limit / transient
+// errors. Returns { config, count, list } and surfaces errors so the
+// caller can render an error state instead of a silent empty grid.
+export async function readAll(client) {
+  const config = await readConfig(client);
+  await sleep(550);
+  const count = await readCount(client);
+  await sleep(550);
+  const list = await readList(client, 0, 50);
+  return { config, count, list };
 }
