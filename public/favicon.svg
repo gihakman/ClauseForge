@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- ink ground -->
+  <rect width="64" height="64" fill="#0B0B0C"/>
+  <!-- amber die (rotated square) -->
+  <rect x="16" y="16" width="32" height="32" transform="rotate(45 32 32)" fill="#E37B2A"/>
+  <!-- ink strike cut across -->
+  <rect x="10" y="30" width="44" height="4" fill="#0B0B0C"/>
+  <!-- cream verdict bar (thin) -->
+  <rect x="10" y="50" width="44" height="2" fill="#F2ECDF"/>
+</svg>
