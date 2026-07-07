@@ -1,0 +1,19 @@
+{
+  "network": "testnet-bradbury",
+  "chainId": 4221,
+  "rpc": "https://rpc-bradbury.genlayer.com",
+  "contractAddress": "0x61858bAF59127aaAcf9721585922755Bf40AC2b5",
+  "deployTxHash": "0x160ff91f197885444cc3b79224e50dd70cba6f6453c95fe7e41fd05a88e2c54c",
+  "explorerTx": "https://explorer-bradbury.genlayer.com/tx/0x160ff91f197885444cc3b79224e50dd70cba6f6453c95fe7e41fd05a88e2c54c",
+  "explorerContract": "https://explorer-bradbury.genlayer.com/address/0x61858bAF59127aaAcf9721585922755Bf40AC2b5",
+  "runner": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
+  "deployer": "0x0b30FFf90Ed88739670A0bf10e9e70717372Ae28",
+  "config": {
+    "owner": "0x0b30FFf90Ed88739670A0bf10e9e70717372Ae28",
+    "fee_recipient": "0x0b30FFf90Ed88739670A0bf10e9e70717372Ae28",
+    "fee_wei": "0",
+    "count": "0",
+    "runner": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
+    "version": "1.0.0"
+  }
+}

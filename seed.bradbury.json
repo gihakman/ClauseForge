@@ -1,0 +1,32 @@
+{
+  "contract": "0x61858bAF59127aaAcf9721585922755Bf40AC2b5",
+  "party_a": "0x0b30FFf90Ed88739670A0bf10e9e70717372Ae28",
+  "explorer": "https://explorer-bradbury.genlayer.com/address/0x61858bAF59127aaAcf9721585922755Bf40AC2b5",
+  "note": "Seed script drove 4 real end-to-end compilations against Bradbury validators. Each agreement was created, compiled by real LLMs, and party_a accepted the resulting hash. Two-sided activation is left to any user via the app's Interactive Console (party_b must accept from their own wallet).",
+  "agreements": [
+    {
+      "id": 1,
+      "title": "Solidity audit of Merkle proof helper",
+      "party_b": "0x2Bd806c97F0e00aF1a1FC3328fA763A9269723C8",
+      "expected": "clear_to_commit=true, low risk (well-specified audit contract)"
+    },
+    {
+      "id": 2,
+      "title": "Make me a landing page",
+      "party_b": "0x81b637d8fcd2c6da6359e6963113a1170de795e4",
+      "expected": "clear_to_commit=false, high risk (intentionally vague; missing deadlines, payment, acceptance criteria, revision policy)"
+    },
+    {
+      "id": 3,
+      "title": "Research memo: Optimistic Democracy vs bonded rollups",
+      "party_b": "0x9c9dfdd67f08cd82c25dfb2bf683b1af5d640a90",
+      "expected": "clear_to_commit=true, low risk (fully specified research deliverable)"
+    },
+    {
+      "id": 4,
+      "title": "PR review by agent",
+      "party_b": "0xE72d97bC44c58f79F5B0Ee7Ba0d24a12ed08b7fC",
+      "expected": "clear_to_commit=true, low risk (agent-to-agent task)"
+    }
+  ]
+}
